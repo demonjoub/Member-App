@@ -4,6 +4,7 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import cuzhy.com.model.User
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
@@ -60,6 +61,12 @@ class MainActivity : AppCompatActivity() {
 
             val adapter = ListAdapte(this@MainActivity, list)
             user_list.adapter = adapter
+
+            user_list.setOnItemClickListener { parent, view, position, id ->
+                val myItem = parent.getItemAtPosition(position) as User
+                // on click item list view
+                Log.d("DEMONJOUB", id.toString() + ": " + myItem.firstName )
+            }
         }
     }
 }
