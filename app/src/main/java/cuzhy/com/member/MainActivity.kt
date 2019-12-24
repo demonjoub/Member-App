@@ -3,9 +3,11 @@ package cuzhy.com.member
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import cuzhy.com.model.User
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -39,20 +41,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun handleJson(jsonString: String?) {
-            val jsonArray = JSONArray(jsonString)
+            var response = JSONObject(jsonString)
+            val userArray = JSONArray(response.getString("data"))
             val list = ArrayList<User>()
-            var x = 0
-//            while (x < jsonArray.length()) {
-//                val jsonObject = jsonArray.getJSONObject(x)
-//                list.add(User(
-//                    jsonObject.getInt("id"),
-//                    jsonObject.getString("email"),
-//                    jsonObject.getString("first_name"),
-//                    jsonObject.getString("last_name"),
-//                    jsonObject.getString("avatar")
-//                ))
-//                x++
-//            }
+
+            for (i in 0 until userArray.length()) {
+                var userObject = userArray.getJSONObject(i)
+                list.add(
+                    User(
+                        userObject.getInt("id"),
+                        userObject.getString("email"),
+                        userObject.getString("first_name"),
+                        userObject.getString("last_name"),
+                        userObject.getString("avatar")
+                    )
+                )
+            }
 
             val adapter = ListAdapte(this@MainActivity, list)
             user_list.adapter = adapter
